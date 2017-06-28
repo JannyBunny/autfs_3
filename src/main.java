@@ -4,7 +4,19 @@ import java.util.Stack;
 import javax.swing.text.html.HTMLEditorKit.Parser;
 
 /**
+ * Grammatik
+ * S->aST|c
+ * T->aT|b
  * 
+ * =>
+ * M=({S,T},{a,b,c},S,d)
+ * 
+ *d(S,a)=ST
+ *d(S,c)=€
+ *d(T,a)=T
+ *d(T,b)=€
+ *
+ *Wörter: c,acb,aa...cb...,aa...c...aaaa...b
  */
 
 /**
@@ -12,12 +24,8 @@ import javax.swing.text.html.HTMLEditorKit.Parser;
  *
  */
 
-
 class LLParser implements I_SpecificParser{
 
-	/**
-	 * 
-	 */
 	char restwort[]; // brauchen das Restwort, hier als Chararray für bessere durchlaufbarkeit
 	char left; //ist der zu übergebene buchstabe an S oder T
 	Stack<String> zuErsetzen = new Stack<String>(); // haben uns eine Stackimplementierung aus Java geholt, da der Typ von "zuErsetzen" Stack ist. (ich hätte das mit ArrayList gemacht...)
@@ -38,11 +46,11 @@ class LLParser implements I_SpecificParser{
 			left=restwort[i]; // gibt an left den nächsten buchstaben weiter.
 			
 			if (zuErsetzen.peek()=="S") {
-				System.out.println(zuErsetzen.peek().toString() + " => " +left );
+				System.out.println(zuErsetzen.peek().toString() + " => " +left ); //hübsche Konsolenausgabe
 				S(left,zuErsetzen);
 				}
 			else if (zuErsetzen.peek()=="T") {
-				System.out.println(zuErsetzen.peek().toString() + " => " +left );
+				System.out.println(zuErsetzen.peek().toString() + " => " +left ); 
 				T(left,zuErsetzen);
 			}
 			
@@ -52,13 +60,10 @@ class LLParser implements I_SpecificParser{
 
 	@Override
 	public void S(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
 		if (left=='c') {
-//			System.out.println(zuErsetzen.peek().toString() + " => " +left );
 			zuErsetzen.pop();
 		}
 		else if (left=='a') {
-//			System.out.println(zuErsetzen.peek().toString() + " => " +left );
 			zuErsetzen.pop();
 			zuErsetzen.push("T");
 			zuErsetzen.push("S");
@@ -71,7 +76,6 @@ class LLParser implements I_SpecificParser{
 
 	@Override
 	public void T(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
 		if (left=='b') {
 //			System.out.println(zuErsetzen.peek().toString() + " => " +left );
 			zuErsetzen.pop();
@@ -88,13 +92,13 @@ class LLParser implements I_SpecificParser{
 
 	@Override
 	public void X(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
+		// unused
 		
 	}
 
 	@Override
 	public void Y(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
+		// unused
 		
 	}
 
@@ -104,11 +108,8 @@ class LLParser implements I_SpecificParser{
 
 public class main {
 
-	/**
-	 * 
-	 */
 	public main() {
-		// TODO Auto-generated constructor stub
+		// no 1
 	}
 
 	/**
@@ -122,50 +123,10 @@ public class main {
 			parser.startLLParser("acb");
 			parser.startLLParser("aaaaaaaacaaaaaaaaaaaaaaab");
 		} catch (ParseException e) {
-
+			// kann auch weg, wenns jemand anders catchen soll, muss aber bei main dann "throws ParseException" hinzugefügt werden
 			e.printStackTrace();
 		}
 	}
-/**
- * Grammatik
- * S->aST|c
- * T->aT|b
- * 
- * =>
- * M=({S,T},{a,b,c},S,d)
- * 
- *d(S,a)=ST
- *d(S,c)=€
- *d(T,a)=T
- *d(T,b)=€
- *
- *Wörter: c,acb,aa...cb...,aa...c...aaaa...b
- */
-	
-
-
-	/**
-	 * Grammatik
-	 * S->aST|c
-	 * T->aT|b
-	 * 
-	 * =>
-	 * M=({S,T},{a,b,c},S,d)
-	 * 
-	 *d(S,a)=ST
-	 *d(S,c)=€
-	 *d(T,a)=T
-	 *d(T,b)=€
-	 *
-	 *Wörter: c,acb,aa...cb...,aa...c...aaaa...b
-	 */
-		
-
-
-	/**
-	 * @author larissa,janosch,jan
-	 *
-	 */
 
 }
 

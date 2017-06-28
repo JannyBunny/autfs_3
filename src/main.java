@@ -6,10 +6,10 @@ import java.util.Stack;
  */
 
 /**
- * @author jan
+ * @author jan,janosch,larissa
  *
  */
-public class main implements I_SpecificParser {
+public class main {
 
 	/**
 	 * 
@@ -22,38 +22,33 @@ public class main implements I_SpecificParser {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-	}
+		LLParser parser = new LLParser();
 
-	@Override
-	public void startLLParser(String wort) throws ParseException {
-		// TODO Auto-generated method stub
-		
-	}
+		try {
+			System.out.println("test");
+//			parser.startLLParser("c");
+			parser.startLLParser("acb");
+		} catch (ParseException e) {
+			System.out.println("catch");
 
-	@Override
-	public void S(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
-		
+			e.printStackTrace();
+		}
 	}
-
-	@Override
-	public void T(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void X(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void Y(Character left, Stack zuErsetzen) throws ParseException {
-		// TODO Auto-generated method stub
-		
-	}
+/**
+ * Grammatik
+ * S->aST|c
+ * T->aT|b
+ * 
+ * =>
+ * M=({S,T},{a,b,c},S,d)
+ * 
+ *d(S,a)=ST
+ *d(S,c)=€
+ *d(T,a)=T
+ *d(T,b)=€
+ *
+ *Wörter: c,acb,aa...cb...,aa...c...aaaa...b
+ */
+	
 
 }

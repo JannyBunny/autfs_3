@@ -44,14 +44,18 @@ class LLParser implements I_SpecificParser{
 		
 		for (int i=0 ; i<restwort.length ; i++) { // schleife, durchläuft das Array "wort"
 			left=restwort[i]; // gibt an left den nächsten buchstaben weiter.
-			
-			if (zuErsetzen.peek()=="S") {
-				System.out.println(zuErsetzen.peek().toString() + " => " +left ); //hübsche Konsolenausgabe
-				S(left,zuErsetzen);
+			if ( !zuErsetzen.isEmpty() ) {
+				if (zuErsetzen.peek()=="S") {
+					System.out.println(zuErsetzen.peek().toString() + " => " +left ); //hübsche Konsolenausgabe
+					S(left,zuErsetzen);
+					}
+				else if (zuErsetzen.peek()=="T") {
+					System.out.println(zuErsetzen.peek().toString() + " => " +left ); 
+					T(left,zuErsetzen);
 				}
-			else if (zuErsetzen.peek()=="T") {
-				System.out.println(zuErsetzen.peek().toString() + " => " +left ); 
-				T(left,zuErsetzen);
+			}
+			else {
+				throw new ParseException("Stack: leer, Wort aber nicht",0);
 			}
 			
 		}
@@ -70,7 +74,7 @@ class LLParser implements I_SpecificParser{
 			
 		}
 		else {
-			throw new ParseException(left.toString()+" Stack S", 0);
+			throw new ParseException("Stack S, falsche Eingabe: "+left.toString(), 0);
 		}
 	}
 
@@ -86,7 +90,7 @@ class LLParser implements I_SpecificParser{
 			zuErsetzen.push("T");
 		}
 		else {
-			throw new ParseException(left.toString()+" Stack T", 0);
+			throw new ParseException("Stack T, falsche Eingabe: "+left.toString(), 0);
 		}
 	}
 

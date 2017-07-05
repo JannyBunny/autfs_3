@@ -5,7 +5,7 @@ import javax.swing.text.html.HTMLEditorKit.Parser;
 
 
 /**
- * Grammatik
+  * Grammatik
  * S->aST|c
  * T->aT|b
  * 
@@ -41,35 +41,43 @@ class LLParser implements I_SpecificParser{
 	public void startLLParser(String wort) throws ParseException {
 		// TODO Auto-generated method stub
 		restwort=wort.toCharArray();
+		
 		zuErsetzen.push("S");
 		
 		for (int i=0 ; i<restwort.length ; i++) { // schleife, durchläuft das Array "wort"
 			left=restwort[i]; // gibt an left den nächsten buchstaben weiter.
 			if ( !zuErsetzen.isEmpty() ) {
-				if (zuErsetzen.peek()=="S") {
-					System.out.println(zuErsetzen.peek().toString() + " => " +left ); //hübsche Konsolenausgabe
+				String pop = zuErsetzen.pop();
+				if (pop=="S") {
+					System.out.println(pop + " => " +left ); //hübsche Konsolenausgabe
 					S(left,zuErsetzen);
 					}
-				else if (zuErsetzen.peek()=="T") {
-					System.out.println(zuErsetzen.peek().toString() + " => " +left ); 
+				else if (pop=="T") {
+					System.out.println(pop + " => " +left ); 
 					T(left,zuErsetzen);
 				}
+			
 			}
 			else {
 				throw new ParseException("Stack: leer, Wort aber nicht",0);
 			}
 			
 		}
-		System.out.println("true"); //return true; // wäre hier die korrekt, wenn das interface boolean wäre.
+		
+		if (!zuErsetzen.isEmpty()){
+			throw new ParseException("Stack: voll, Wort leer",0);
+		}
+		else  {
+			System.out.println("true"); //return true; // wäre hier die korrekt, wenn das interface boolean wäre.
+		}
 		}
 
 	@Override
 	public void S(Character left, Stack zuErsetzen) throws ParseException {
 		if (left=='c') {
-			zuErsetzen.pop();
+			
 		}
 		else if (left=='a') {
-			zuErsetzen.pop();
 			zuErsetzen.push("T");
 			zuErsetzen.push("S");
 			
@@ -82,12 +90,8 @@ class LLParser implements I_SpecificParser{
 	@Override
 	public void T(Character left, Stack zuErsetzen) throws ParseException {
 		if (left=='b') {
-//			System.out.println(zuErsetzen.peek().toString() + " => " +left );
-			zuErsetzen.pop();
 		}
 		else if (left=='a') {
-//			System.out.println(zuErsetzen.peek().toString() + " => " +left );
-			zuErsetzen.pop();
 			zuErsetzen.push("T");
 		}
 		else {
@@ -124,9 +128,21 @@ public class main {
 		LLParser parser = new LLParser();
 
 		try {
-			parser.startLLParser("c");
-			parser.startLLParser("acb");
-			parser.startLLParser("aaaaaaaacaaaaaaaaaaaaaaab");
+
+//			parser.startLLParser("a"); // stack voll, wort leer
+//			parser.startLLParser("bc"); //falsch
+
+
+//			parser.startLLParser("z"); // falsches eingabesymbol
+			
+			parser.startLLParser("c"); //ok
+			parser.startLLParser("acb"); //ok
+
+			parser.startLLParser("acab"); //ok (S=*>aT
+
+			parser.startLLParser("aacbb"); //ok
+			
+			parser.startLLParser("cc"); //Wort voll, Stack leer
 		} catch (ParseException e) {
 			// kann auch weg, wenns jemand anders catchen soll, muss aber bei main dann "throws ParseException" hinzugefügt werden
 			e.printStackTrace();

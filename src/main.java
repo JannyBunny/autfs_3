@@ -135,10 +135,10 @@ public class main {
 
 //			parser.startLLParser("z"); // falsches eingabesymbol
 			
-			parser.startLLParser("c"); //ok
+			parser.startLLParser("c"); //ok S=>c
 			parser.startLLParser("acb"); //ok
 
-			parser.startLLParser("acab"); //ok (S=*>aT
+			parser.startLLParser("acab"); //ok S=*>aT
 
 			parser.startLLParser("aacbb"); //ok
 			
